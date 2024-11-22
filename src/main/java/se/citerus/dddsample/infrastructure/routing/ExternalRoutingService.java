@@ -3,6 +3,7 @@ package se.citerus.dddsample.infrastructure.routing;
 import com.pathfinder.api.GraphTraversalService;
 import com.pathfinder.api.TransitEdge;
 import com.pathfinder.api.TransitPath;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.citerus.dddsample.domain.model.cargo.Itinerary;
@@ -27,8 +28,8 @@ import java.util.stream.Collectors;
  * by the routing team, which operates in a different context from us.
  *
  */
+@Slf4j
 public class ExternalRoutingService implements RoutingService {
-  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private final GraphTraversalService graphTraversalService;
   private final LocationRepository locationRepository;
@@ -72,7 +73,7 @@ public class ExternalRoutingService implements RoutingService {
     if (routeSpecification.isSatisfiedBy(itinerary)) {
       return true;
     } else {
-      logger.warn("Received itinerary that did not satisfy the route specification");
+      log.warn("Received itinerary that did not satisfy the route specification");
       return false;
     }
   }

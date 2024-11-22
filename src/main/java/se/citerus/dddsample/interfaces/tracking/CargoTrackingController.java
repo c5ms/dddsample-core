@@ -2,6 +2,9 @@ package se.citerus.dddsample.interfaces.tracking;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -15,6 +18,7 @@ import se.citerus.dddsample.domain.model.cargo.TrackingId;
 import se.citerus.dddsample.domain.model.handling.HandlingEvent;
 import se.citerus.dddsample.domain.model.handling.HandlingEventRepository;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -33,6 +37,7 @@ import java.util.Map;
  * @see CargoTrackingViewAdapter
  * @see se.citerus.dddsample.interfaces.booking.web.CargoAdminController
  */
+@Slf4j
 @Controller
 @RequestMapping("/track")
 @RequiredArgsConstructor

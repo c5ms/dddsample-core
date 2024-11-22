@@ -1,5 +1,6 @@
 package se.citerus.dddsample.application.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +17,12 @@ import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
 import java.lang.invoke.MethodHandles;
 import java.time.Instant;
 
+@Slf4j
 public class HandlingEventServiceImpl implements HandlingEventService {
 
   private final ApplicationEvents applicationEvents;
   private final HandlingEventRepository handlingEventRepository;
   private final HandlingEventFactory handlingEventFactory;
-  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   public HandlingEventServiceImpl(final HandlingEventRepository handlingEventRepository,
                                   final ApplicationEvents applicationEvents,
@@ -55,7 +56,7 @@ public class HandlingEventServiceImpl implements HandlingEventService {
     /* Publish an event stating that a cargo has been handled. */
     applicationEvents.cargoWasHandled(event);
 
-    logger.info("Registered handling event: {}", event);
+    log.info("Registered handling event: {}", event);
   }
 
 }

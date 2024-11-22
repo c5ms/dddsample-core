@@ -1,6 +1,7 @@
 package se.citerus.dddsample.infrastructure.messaging.jms;
 
 import jakarta.jms.Destination;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.core.JmsOperations;
@@ -14,8 +15,8 @@ import java.lang.invoke.MethodHandles;
 /**
  * JMS based implementation.
  */
+@Slf4j
 public final class JmsApplicationEventsImpl implements ApplicationEvents {
-  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private final JmsOperations jmsOperations;
   private final Destination cargoHandledQueue;
@@ -36,25 +37,25 @@ public final class JmsApplicationEventsImpl implements ApplicationEvents {
   @Override
   public void cargoWasHandled(final HandlingEvent event) {
     final Cargo cargo = event.cargo();
-    logger.info("Cargo was handled {}", cargo);
+    log.info("Cargo was handled {}", cargo);
     jmsOperations.send(cargoHandledQueue, session -> session.createTextMessage(cargo.trackingId().idString()));
   }
 
   @Override
   public void cargoWasMisdirected(final Cargo cargo) {
-    logger.info("Cargo was misdirected {}", cargo);
+    log.info("Cargo was misdirected {}", cargo);
     jmsOperations.send(misdirectedCargoQueue, session -> session.createTextMessage(cargo.trackingId().idString()));
   }
 
   @Override
   public void cargoHasArrived(final Cargo cargo) {
-    logger.info("Cargo has arrived {}", cargo);
+    log.info("Cargo has arrived {}", cargo);
     jmsOperations.send(deliveredCargoQueue, session -> session.createTextMessage(cargo.trackingId().idString()));
   }
 
   @Override
   public void receivedHandlingEventRegistrationAttempt(final HandlingEventRegistrationAttempt attempt) {
-    logger.info("Received handling event registration attempt {}", attempt);
+    log.info("Received handling event registration attempt {}", attempt);
     jmsOperations.send(handlingEventQueue, session -> session.createObjectMessage(attempt));
   }
 }

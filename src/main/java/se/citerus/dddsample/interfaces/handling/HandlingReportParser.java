@@ -25,7 +25,6 @@ import static java.util.stream.Collectors.toList;
 public class HandlingReportParser {
 
   public static final String ISO_8601_FORMAT = "yyyy-MM-dd HH:mm";
-  public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(ISO_8601_FORMAT);
 
   public static UnLocode parseUnLocode(final String unlocode) {
     try {
@@ -96,7 +95,6 @@ public class HandlingReportParser {
             .orElse(emptyList())
             .stream()
             .map(HandlingReportParser::parseTrackingId)
-            .filter(Objects::nonNull)
             .collect(toList());
   }
 }

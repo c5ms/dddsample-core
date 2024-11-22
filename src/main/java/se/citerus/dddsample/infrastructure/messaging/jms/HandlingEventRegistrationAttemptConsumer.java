@@ -3,6 +3,7 @@ package se.citerus.dddsample.infrastructure.messaging.jms;
 import jakarta.jms.Message;
 import jakarta.jms.MessageListener;
 import jakarta.jms.ObjectMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.citerus.dddsample.application.HandlingEventService;
@@ -15,10 +16,10 @@ import java.lang.invoke.MethodHandles;
  * proper registration.
  *
  */
+@Slf4j
 public class HandlingEventRegistrationAttemptConsumer implements MessageListener {
 
   private final HandlingEventService handlingEventService;
-  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   public HandlingEventRegistrationAttemptConsumer(HandlingEventService handlingEventService) {
     this.handlingEventService = handlingEventService;
@@ -37,7 +38,7 @@ public class HandlingEventRegistrationAttemptConsumer implements MessageListener
         attempt.getType()
       );
     } catch (Exception e) {
-      logger.error("Error consuming HandlingEventRegistrationAttempt message", e);
+      log.error("Error consuming HandlingEventRegistrationAttempt message", e);
     }
   }
 }

@@ -3,6 +3,7 @@ package se.citerus.dddsample.infrastructure.messaging.jms;
 import jakarta.jms.Message;
 import jakarta.jms.MessageListener;
 import jakarta.jms.TextMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.citerus.dddsample.application.CargoInspectionService;
@@ -17,10 +18,10 @@ import java.lang.invoke.MethodHandles;
  * This is a programmatic hook into the JMS infrastructure to
  * make cargo inspection message-driven.
  */
+@Slf4j
 public class CargoHandledConsumer implements MessageListener {
 
   private final CargoInspectionService cargoInspectionService;
-  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   public CargoHandledConsumer(CargoInspectionService cargoInspectionService) {
     this.cargoInspectionService = cargoInspectionService;
@@ -34,7 +35,7 @@ public class CargoHandledConsumer implements MessageListener {
       
       cargoInspectionService.inspectCargo(new TrackingId(trackingidString));
     } catch (Exception e) {
-      logger.error("Error consuming CargoHandled message", e);
+      log.error("Error consuming CargoHandled message", e);
     }
   }
 }

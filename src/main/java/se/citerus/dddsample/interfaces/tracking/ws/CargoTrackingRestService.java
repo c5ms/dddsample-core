@@ -1,6 +1,7 @@
 package se.citerus.dddsample.interfaces.tracking.ws;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -23,9 +24,9 @@ import java.util.Locale;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@Slf4j
 @RestController
 public class CargoTrackingRestService {
-    private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final CargoRepository cargoRepository;
     private final HandlingEventRepository handlingEventRepository;

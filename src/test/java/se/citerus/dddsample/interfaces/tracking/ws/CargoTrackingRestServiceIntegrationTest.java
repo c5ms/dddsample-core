@@ -61,6 +61,7 @@ public class CargoTrackingRestServiceIntegrationTest {
             restTemplate.exchange(request, String.class);
             fail("Did not throw HttpClientErrorException");
         } catch (HttpClientErrorException e) {
+            assertThat(e.getResponseHeaders()).isNotNull();
             assertThat(e.getResponseHeaders().getLocation()).isEqualTo(new URI("/dddsample/api/track/MISSING"));
         }
     }

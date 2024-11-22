@@ -30,10 +30,10 @@ import java.util.List;
  */
 public class BookingServiceFacadeImpl implements BookingServiceFacade {
 
-  private BookingService bookingService;
-  private LocationRepository locationRepository;
-  private CargoRepository cargoRepository;
-  private VoyageRepository voyageRepository;
+  private final BookingService bookingService;
+  private final LocationRepository locationRepository;
+  private final CargoRepository cargoRepository;
+  private final VoyageRepository voyageRepository;
 
   public BookingServiceFacadeImpl(BookingService bookingService, LocationRepository locationRepository, CargoRepository cargoRepository, VoyageRepository voyageRepository) {
     this.bookingService = bookingService;
