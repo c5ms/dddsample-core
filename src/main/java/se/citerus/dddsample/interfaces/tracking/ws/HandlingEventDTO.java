@@ -1,9 +1,12 @@
 package se.citerus.dddsample.interfaces.tracking.ws;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * A data-transport object class represnting a view of a HandlingEvent owned by a Cargo.
  * Used by the REST API for public cargo tracking.
  */
+@Schema(name = "HandlingEvent")
 public class HandlingEventDTO {
 
     public final String location;

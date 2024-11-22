@@ -1,11 +1,14 @@
 package se.citerus.dddsample.interfaces.tracking.ws;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
 /**
  * A data-transport object class representing a view of a Cargo entity.
  * Used by the REST API for public cargo tracking.
  */
+@Schema(name = "CargoTracking")
 public class CargoTrackingDTO {
 
     public final String trackingId;

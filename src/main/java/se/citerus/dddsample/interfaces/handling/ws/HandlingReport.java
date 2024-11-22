@@ -1,10 +1,12 @@
 package se.citerus.dddsample.interfaces.handling.ws;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Schema(name = "HandlingReport")
 public class HandlingReport {
     @JsonProperty(required = true)
     public LocalDateTime completionTime;
