@@ -2,6 +2,7 @@ package se.citerus.dddsample.application.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.citerus.dddsample.application.ApplicationEvents;
 import se.citerus.dddsample.application.CargoInspectionService;
@@ -12,6 +13,7 @@ import se.citerus.dddsample.domain.model.handling.HandlingEventRepository;
 import se.citerus.dddsample.domain.model.handling.HandlingHistory;
 
 @Slf4j
+@Service
 public class CargoInspectionServiceImpl implements CargoInspectionService {
 
     private final ApplicationEvents applicationEvents;

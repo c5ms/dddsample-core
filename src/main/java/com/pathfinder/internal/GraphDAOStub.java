@@ -1,9 +1,12 @@
 package com.pathfinder.internal;
 
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+@Service
 public class GraphDAOStub implements GraphDAO{
 
   private static final Random random = new Random();

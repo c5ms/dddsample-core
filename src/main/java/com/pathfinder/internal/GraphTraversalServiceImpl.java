@@ -3,15 +3,17 @@ package com.pathfinder.internal;
 import com.pathfinder.api.GraphTraversalService;
 import com.pathfinder.api.TransitEdge;
 import com.pathfinder.api.TransitPath;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+@Service
 public class GraphTraversalServiceImpl implements GraphTraversalService {
 
-  private GraphDAO dao;
-  private Random random;
+  private final GraphDAO dao;
+  private final Random random;
   private static final long ONE_MIN_MS = 1000 * 60;
   private static final long ONE_DAY_MS = ONE_MIN_MS * 60 * 24;
 

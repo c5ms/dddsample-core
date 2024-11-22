@@ -3,6 +3,7 @@ package se.citerus.dddsample.application.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.citerus.dddsample.application.ApplicationEvents;
 import se.citerus.dddsample.application.HandlingEventService;
@@ -18,6 +19,7 @@ import java.lang.invoke.MethodHandles;
 import java.time.Instant;
 
 @Slf4j
+@Service
 public class HandlingEventServiceImpl implements HandlingEventService {
 
   private final ApplicationEvents applicationEvents;
