@@ -1,5 +1,6 @@
 package se.citerus.dddsample.application.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
 
     private final CargoRepository cargoRepository;
@@ -23,15 +25,6 @@ public class BookingServiceImpl implements BookingService {
     private final RoutingService routingService;
     private final CargoFactory cargoFactory;
 
-    public BookingServiceImpl(final CargoRepository cargoRepository,
-                              final LocationRepository locationRepository,
-                              final RoutingService routingService,
-                              final CargoFactory cargoFactory) {
-        this.cargoRepository = cargoRepository;
-        this.locationRepository = locationRepository;
-        this.routingService = routingService;
-        this.cargoFactory = cargoFactory;
-    }
 
     @Override
     @Transactional

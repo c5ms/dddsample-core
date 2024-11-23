@@ -1,5 +1,7 @@
 package se.citerus.dddsample.interfaces.booking.facade.internal;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import se.citerus.dddsample.application.BookingService;
 import se.citerus.dddsample.domain.model.cargo.Cargo;
 import se.citerus.dddsample.domain.model.cargo.CargoRepository;
@@ -28,19 +30,14 @@ import java.util.List;
  * analogous to the view rendering for web interfaces.
  *
  */
+@Service
+@RequiredArgsConstructor
 public class BookingServiceFacadeImpl implements BookingServiceFacade {
 
   private final BookingService bookingService;
   private final LocationRepository locationRepository;
   private final CargoRepository cargoRepository;
   private final VoyageRepository voyageRepository;
-
-  public BookingServiceFacadeImpl(BookingService bookingService, LocationRepository locationRepository, CargoRepository cargoRepository, VoyageRepository voyageRepository) {
-    this.bookingService = bookingService;
-    this.locationRepository = locationRepository;
-    this.cargoRepository = cargoRepository;
-    this.voyageRepository = voyageRepository;
-  }
 
   @Override
   public List<LocationDTO> listShippingLocations() {

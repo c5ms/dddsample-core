@@ -7,8 +7,6 @@ import se.citerus.dddsample.domain.shared.ValueObject;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.sort;
-
 /**
  * The handling history of a cargo.
  */

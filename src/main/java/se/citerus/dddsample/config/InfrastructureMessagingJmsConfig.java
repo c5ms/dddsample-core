@@ -1,4 +1,4 @@
-package se.citerus.dddsample.infrastructure.messaging.jms;
+package se.citerus.dddsample.config;
 
 import jakarta.jms.*;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -14,6 +14,10 @@ import org.springframework.jms.core.JmsTemplate;
 import se.citerus.dddsample.application.ApplicationEvents;
 import se.citerus.dddsample.application.CargoInspectionService;
 import se.citerus.dddsample.application.HandlingEventService;
+import se.citerus.dddsample.infrastructure.messaging.jms.CargoHandledConsumer;
+import se.citerus.dddsample.infrastructure.messaging.jms.HandlingEventRegistrationAttemptConsumer;
+import se.citerus.dddsample.infrastructure.messaging.jms.JmsApplicationEventsImpl;
+import se.citerus.dddsample.infrastructure.messaging.jms.SimpleLoggingConsumer;
 
 import java.util.List;
 

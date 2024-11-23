@@ -16,9 +16,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
+
 @DataJpaTest
-@ContextConfiguration(classes = TestRepositoryConfig.class)
 @Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class LocationRepositoryTest {

@@ -4,12 +4,8 @@ import jakarta.jms.Message;
 import jakarta.jms.MessageListener;
 import jakarta.jms.TextMessage;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import se.citerus.dddsample.application.CargoInspectionService;
 import se.citerus.dddsample.domain.model.cargo.TrackingId;
-
-import java.lang.invoke.MethodHandles;
 
 /**
  * Consumes JMS messages and delegates notification of misdirected

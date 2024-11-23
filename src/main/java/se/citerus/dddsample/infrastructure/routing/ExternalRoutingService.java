@@ -3,9 +3,8 @@ package se.citerus.dddsample.infrastructure.routing;
 import com.pathfinder.api.GraphTraversalService;
 import com.pathfinder.api.TransitEdge;
 import com.pathfinder.api.TransitPath;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import se.citerus.dddsample.domain.model.cargo.Itinerary;
 import se.citerus.dddsample.domain.model.cargo.Leg;
@@ -17,7 +16,6 @@ import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
 import se.citerus.dddsample.domain.model.voyage.VoyageRepository;
 import se.citerus.dddsample.domain.service.RoutingService;
 
-import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -31,17 +29,13 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ExternalRoutingService implements RoutingService {
 
   private final GraphTraversalService graphTraversalService;
   private final LocationRepository locationRepository;
   private final VoyageRepository voyageRepository;
 
-  public ExternalRoutingService(GraphTraversalService graphTraversalService, LocationRepository locationRepository, VoyageRepository voyageRepository) {
-    this.graphTraversalService = graphTraversalService;
-    this.locationRepository = locationRepository;
-    this.voyageRepository = voyageRepository;
-  }
 
   public List<Itinerary> fetchRoutesForSpecification(RouteSpecification routeSpecification) {
     /*

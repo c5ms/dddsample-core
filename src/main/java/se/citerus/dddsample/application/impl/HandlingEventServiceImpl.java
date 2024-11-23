@@ -1,8 +1,7 @@
 package se.citerus.dddsample.application.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.citerus.dddsample.application.ApplicationEvents;
@@ -15,24 +14,16 @@ import se.citerus.dddsample.domain.model.handling.HandlingEventRepository;
 import se.citerus.dddsample.domain.model.location.UnLocode;
 import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
 
-import java.lang.invoke.MethodHandles;
 import java.time.Instant;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class HandlingEventServiceImpl implements HandlingEventService {
 
   private final ApplicationEvents applicationEvents;
   private final HandlingEventRepository handlingEventRepository;
   private final HandlingEventFactory handlingEventFactory;
-
-  public HandlingEventServiceImpl(final HandlingEventRepository handlingEventRepository,
-                                  final ApplicationEvents applicationEvents,
-                                  final HandlingEventFactory handlingEventFactory) {
-    this.handlingEventRepository = handlingEventRepository;
-    this.applicationEvents = applicationEvents;
-    this.handlingEventFactory = handlingEventFactory;
-  }
 
   @Override
   @Transactional(rollbackFor = CannotCreateHandlingEventException.class)

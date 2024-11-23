@@ -14,9 +14,7 @@ import se.citerus.dddsample.domain.model.voyage.VoyageRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
 @DataJpaTest
-@ContextConfiguration(classes = TestRepositoryConfig.class)
 @Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class CarrierMovementRepositoryTest {

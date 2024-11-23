@@ -1,6 +1,7 @@
 package se.citerus.dddsample.interfaces.tracking;
 
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -8,6 +9,7 @@ import org.springframework.validation.Validator;
 /**
  * Validator for {@link TrackCommand}s.
  */
+@Component
 public final class TrackCommandValidator implements Validator {
 
   public boolean supports(@NonNull final Class<?> clazz) {

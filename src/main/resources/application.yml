@@ -7,22 +7,28 @@ logging:
         jdbc: debug
         'se.citerus.dddsample': debug
 
-uploadDirectory: /tmp/upload
-parseFailureDirectory: /tmp/failed
 
 brokerUrl: "vm://localhost?broker.persistent=false&broker.useJmx=false"
+
+ddd:
+    sample:
+        interfaces:
+            uploadDirectory: /tmp/upload
+            parseFailureDirectory: /tmp/failed
 
 spring:
     dataSource:
         url: jdbc:hsqldb:mem:dddsample
         username: sa
         password: ""
+    jpa:
+        open-in-view: true
 
 jdbc:
     datasource-proxy:
         enabled: true
+        multiline: false
+        include-parameter-values: true
         query:
             logger-name: jdbc
             enable-logging: true
-        multiline: false
-        include-parameter-values: true

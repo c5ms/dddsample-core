@@ -1,5 +1,6 @@
 package se.citerus.dddsample.application.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
@@ -14,19 +15,13 @@ import se.citerus.dddsample.domain.model.handling.HandlingHistory;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CargoInspectionServiceImpl implements CargoInspectionService {
 
     private final ApplicationEvents applicationEvents;
     private final CargoRepository cargoRepository;
     private final HandlingEventRepository handlingEventRepository;
 
-    public CargoInspectionServiceImpl(final ApplicationEvents applicationEvents,
-                                      final CargoRepository cargoRepository,
-                                      final HandlingEventRepository handlingEventRepository) {
-        this.applicationEvents = applicationEvents;
-        this.cargoRepository = cargoRepository;
-        this.handlingEventRepository = handlingEventRepository;
-    }
 
     @Override
     @Transactional

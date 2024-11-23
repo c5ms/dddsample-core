@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -29,7 +30,7 @@ import static se.citerus.dddsample.infrastructure.sampledata.SampleVoyages.*;
  * Provides sample data.
  */
 @Slf4j
-@Service
+@Component
 @RequiredArgsConstructor
 public class SampleDataGenerator {
     private final static LocalDate BASE_DATE = LocalDate.parse("2008-01-01");

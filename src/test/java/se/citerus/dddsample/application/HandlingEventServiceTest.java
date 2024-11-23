@@ -40,7 +40,7 @@ public class HandlingEventServiceTest {
     applicationEvents = mock(ApplicationEvents.class);
 
     HandlingEventFactory handlingEventFactory = new HandlingEventFactory(cargoRepository, voyageRepository, locationRepository);
-    service = new HandlingEventServiceImpl(handlingEventRepository, applicationEvents, handlingEventFactory);
+    service = new HandlingEventServiceImpl(applicationEvents,handlingEventRepository, handlingEventFactory);
   }
 
   @Test

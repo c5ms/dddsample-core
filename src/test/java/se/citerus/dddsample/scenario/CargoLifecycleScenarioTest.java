@@ -336,7 +336,7 @@ public class CargoLifecycleScenarioTest {
     handlingEventFactory = new HandlingEventFactory(cargoRepository, voyageRepository, locationRepository);
 
     cargoInspectionService = new CargoInspectionServiceImpl(applicationEvents, cargoRepository, handlingEventRepository);
-    handlingEventService = new HandlingEventServiceImpl(handlingEventRepository, applicationEvents, handlingEventFactory);
+    handlingEventService = new HandlingEventServiceImpl(applicationEvents,handlingEventRepository, handlingEventFactory);
     CargoFactory cargoFactory = new CargoFactory(locationRepository, cargoRepository);
     bookingService = new BookingServiceImpl(cargoRepository, locationRepository, routingService, cargoFactory);
 

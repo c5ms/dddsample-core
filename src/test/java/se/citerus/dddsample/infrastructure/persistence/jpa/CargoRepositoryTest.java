@@ -19,6 +19,7 @@ import se.citerus.dddsample.domain.model.location.UnLocode;
 import se.citerus.dddsample.domain.model.voyage.Voyage;
 import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
 import se.citerus.dddsample.domain.model.voyage.VoyageRepository;
+import se.citerus.dddsample.infrastructure.sampledata.SampleDataGenerator;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -33,10 +34,7 @@ import static se.citerus.dddsample.infrastructure.sampledata.SampleLocations.*;
 import static se.citerus.dddsample.infrastructure.sampledata.SampleVoyages.HELSINKI_TO_HONGKONG;
 import static se.citerus.dddsample.infrastructure.sampledata.SampleVoyages.NEW_YORK_TO_DALLAS;
 
-@ExtendWith(SpringExtension.class)
 @DataJpaTest
-@ContextConfiguration(classes = TestRepositoryConfig.class)
-@Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class CargoRepositoryTest {
     @Autowired
