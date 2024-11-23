@@ -3,10 +3,10 @@ package se.citerus.dddsample.domain.model.cargo;
 import org.apache.commons.lang3.Validate;
 import se.citerus.dddsample.domain.model.handling.HandlingEvent;
 import se.citerus.dddsample.domain.model.location.Location;
+import se.citerus.dddsample.domain.shared.ImmutableValues;
 import se.citerus.dddsample.domain.shared.ValueObject;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,8 +37,8 @@ public class Itinerary implements ValueObject<Itinerary> {
   /**
    * @return the legs of this itinerary, as an <b>immutable</b> list.
    */
-  public List<Leg> legs() {
-    return new ArrayList<>(legs); // Note: due to JPA requirements, the returned list must be modifiable.
+  public ImmutableValues<Leg> legs() {
+    return ImmutableValues.of(legs);
   }
 
   /**

@@ -1,7 +1,11 @@
 package se.citerus.dddsample.domain.model.voyage;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import se.citerus.dddsample.domain.shared.ImmutableValues;
 import se.citerus.dddsample.domain.shared.ValueObject;
 
 import java.util.Collections;
@@ -11,14 +15,14 @@ import java.util.List;
  * A voyage schedule.
  * 
  */
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Schedule implements ValueObject<Schedule> {
 
   private List<CarrierMovement> carrierMovements = Collections.emptyList();
 
   public static final Schedule EMPTY = new Schedule();
 
-  public Schedule(final List<CarrierMovement> carrierMovements) {
-    Validate.notNull(carrierMovements);
+  public Schedule(@NonNull final List<CarrierMovement> carrierMovements) {
     Validate.noNullElements(carrierMovements);
     Validate.notEmpty(carrierMovements);
 
@@ -28,8 +32,8 @@ public class Schedule implements ValueObject<Schedule> {
   /**
    * @return Carrier movements.
    */
-  public List<CarrierMovement> carrierMovements() {
-    return Collections.unmodifiableList(carrierMovements);
+  public ImmutableValues<CarrierMovement> carrierMovements() {
+    return ImmutableValues.of(carrierMovements);
   }
 
   @Override
@@ -52,8 +56,5 @@ public class Schedule implements ValueObject<Schedule> {
     return new HashCodeBuilder().append(this.carrierMovements).toHashCode();
   }
 
-  Schedule() {
-    // Needed by Hibernate
-  }
 
 }

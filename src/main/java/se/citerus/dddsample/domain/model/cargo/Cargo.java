@@ -69,7 +69,7 @@ public class Cargo implements DomainEntity<Cargo> {
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "cargo_id")
-  public List<Leg> itinerary; // TODO figure out if we can map an Itinerary object instead
+  public List<Leg> itineraryLegs; // TODO figure out if we can map an Itinerary object instead
 
   @Embedded
   public Delivery delivery;
@@ -95,10 +95,10 @@ public class Cargo implements DomainEntity<Cargo> {
     this.trackingId = trackingId.idString();
     this.origin = routeSpecification.origin();
     this.routeSpecification = routeSpecification;
-    this.itinerary = itinerary.legs();
+    this.itineraryLegs = itinerary.legs().toList();
 
     this.delivery = Delivery.derivedFrom(
-            this.routeSpecification, new Itinerary(this.itinerary), HandlingHistory.EMPTY
+            this.routeSpecification, new Itinerary(this.itineraryLegs), HandlingHistory.EMPTY
     );
   }
 
@@ -129,10 +129,10 @@ public class Cargo implements DomainEntity<Cargo> {
    * @return The itinerary. Never null.
    */
   public Itinerary itinerary() {
-    if (itinerary == null || itinerary.isEmpty()) {
+    if (itineraryLegs == null || itineraryLegs.isEmpty()) {
       return Itinerary.EMPTY_ITINERARY;
     }
-    return new Itinerary(itinerary);
+    return new Itinerary(itineraryLegs);
   }
 
   /**
@@ -151,7 +151,7 @@ public class Cargo implements DomainEntity<Cargo> {
     Validate.notNull(routeSpecification, "Route specification is required");
 
     this.routeSpecification = routeSpecification;
-    Itinerary itineraryForRouting = this.itinerary != null && !this.itinerary.isEmpty() ? new Itinerary(this.itinerary) : null;
+    Itinerary itineraryForRouting = this.itineraryLegs != null && !this.itineraryLegs.isEmpty() ? new Itinerary(this.itineraryLegs) : null;
     // Handling consistency within the Cargo aggregate synchronously
     this.delivery = delivery.updateOnRouting(this.routeSpecification, itineraryForRouting);
   }
@@ -164,7 +164,7 @@ public class Cargo implements DomainEntity<Cargo> {
   public void assignToRoute(final Itinerary itinerary) {
     Validate.notNull(itinerary, "Itinerary is required for assignment");
 
-    this.itinerary = itinerary.legs();
+    this.itineraryLegs = itinerary.legs().toList();
     // Handling consistency within the Cargo aggregate synchronously
     this.delivery = delivery.updateOnRouting(this.routeSpecification, itinerary);
   }

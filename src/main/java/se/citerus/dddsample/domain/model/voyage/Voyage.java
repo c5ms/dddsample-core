@@ -41,7 +41,7 @@ public class Voyage implements DomainEntity<Voyage> {
     Validate.notNull(schedule, "Schedule is required");
 
     this.voyageNumber = voyageNumber.idString();
-    this.carrierMovements = schedule.carrierMovements();
+    this.carrierMovements = schedule.carrierMovements().toList();
   }
 
   /**
