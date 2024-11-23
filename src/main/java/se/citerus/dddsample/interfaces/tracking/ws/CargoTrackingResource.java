@@ -1,6 +1,7 @@
 package se.citerus.dddsample.interfaces.tracking.ws;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
@@ -21,21 +22,20 @@ import java.util.Locale;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * CargoTrackingResource is the rest resource endpoint
+ * see <a href="https://en.wikipedia.org/wiki/REST">REST in wiki</a> for more detail
+ */
 @Slf4j
 @RestController
-public class CargoTrackingRestService {
+@RequiredArgsConstructor
+public class CargoTrackingResource {
 
     private final CargoRepository cargoRepository;
     private final HandlingEventRepository handlingEventRepository;
     private final MessageSource messageSource;
 
-    public CargoTrackingRestService(CargoRepository cargoRepository, HandlingEventRepository handlingEventRepository, MessageSource messageSource) {
-        this.cargoRepository = cargoRepository;
-        this.handlingEventRepository = handlingEventRepository;
-        this.messageSource = messageSource;
-    }
-
-    @GetMapping(value = "/api/track/{trackingId}", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/track/{trackingId}")
     public ResponseEntity<CargoTrackingDTO> trackCargo(final HttpServletRequest request,
                                                        @PathVariable("trackingId") String trackingId) {
         try {
@@ -47,9 +47,9 @@ public class CargoTrackingRestService {
                 return ResponseEntity.notFound().location(uri).build();
             }
             final List<HandlingEvent> handlingEvents = handlingEventRepository.lookupHandlingHistoryOfCargo(trkId)
-                    .distinctEventsByCompletionTime();
+                .distinctEventsByCompletionTime();
             return ResponseEntity.ok(CargoTrackingDTOConverter.convert(cargo, handlingEvents, messageSource, locale));
-        }  catch (Exception e) {
+        } catch (Exception e) {
             log.error("Unexpected error in trackCargo endpoint", e);
             return ResponseEntity.status(500).build();
         }

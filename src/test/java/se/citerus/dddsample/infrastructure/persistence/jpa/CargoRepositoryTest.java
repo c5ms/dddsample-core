@@ -3,13 +3,10 @@ package se.citerus.dddsample.infrastructure.persistence.jpa;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
 import se.citerus.dddsample.domain.model.cargo.*;
 import se.citerus.dddsample.domain.model.handling.HandlingEvent;
 import se.citerus.dddsample.domain.model.handling.HandlingEventRepository;
@@ -19,7 +16,8 @@ import se.citerus.dddsample.domain.model.location.UnLocode;
 import se.citerus.dddsample.domain.model.voyage.Voyage;
 import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
 import se.citerus.dddsample.domain.model.voyage.VoyageRepository;
-import se.citerus.dddsample.infrastructure.sampledata.SampleDataGenerator;
+import se.citerus.dddsample.domain.shared.ImmutableValues;
+import se.citerus.dddsample.infrastructure.persistence.jpa.context.TestRepositoryConfig;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -35,6 +33,7 @@ import static se.citerus.dddsample.infrastructure.sampledata.SampleVoyages.HELSI
 import static se.citerus.dddsample.infrastructure.sampledata.SampleVoyages.NEW_YORK_TO_DALLAS;
 
 @DataJpaTest
+@ImportAutoConfiguration(TestRepositoryConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class CargoRepositoryTest {
     @Autowired
@@ -73,7 +72,7 @@ public class CargoRepositoryTest {
 
         assertHandlingEvent(cargo, secondEvent, LOAD, HONGKONG, toDate("2009-03-02"), Instant.now(), new VoyageNumber("0100S"));
 
-        List<Leg> legs = cargo.itinerary().legs();
+        ImmutableValues<Leg> legs = cargo.itinerary().legs();
         assertThat(legs).hasSize(3)
             .extracting("voyage.voyageNumber", "loadLocation", "unloadLocation")
             .containsExactly(

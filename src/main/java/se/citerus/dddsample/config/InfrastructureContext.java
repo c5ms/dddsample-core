@@ -1,10 +1,11 @@
 package se.citerus.dddsample.config;
 
 import jakarta.jms.*;
+import lombok.RequiredArgsConstructor;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
@@ -23,20 +24,24 @@ import java.util.List;
 
 @EnableJms
 @Configuration
-public class InfrastructureMessagingJmsConfig {
+@RequiredArgsConstructor
+@EnableConfigurationProperties(InfrastructureProperties.class)
+public class InfrastructureContext {
 
-    @Value("${brokerUrl}")
-    private String brokerUrl;
+    private final InfrastructureProperties infrastructureProperties;
 
     @Bean(value = "cargoHandledConsumer", destroyMethod = "close")
-    public MessageConsumer cargoHandledConsumer(Session session, @Qualifier("cargoHandledQueue") Destination destination, CargoInspectionService cargoInspectionService) throws JMSException {
+    public MessageConsumer cargoHandledConsumer(Session session, @Qualifier("cargoHandledQueue") Destination destination,
+                                                CargoInspectionService cargoInspectionService) throws JMSException {
         MessageConsumer consumer = session.createConsumer(destination);
         consumer.setMessageListener(new CargoHandledConsumer(cargoInspectionService));
         return consumer;
     }
 
     @Bean(value = "handlingEventRegistrationAttemptConsumer", destroyMethod = "close")
-    public MessageConsumer handlingEventRegistrationAttemptConsumer(Session session, @Qualifier("handlingEventRegistrationAttemptQueue") Destination destination, HandlingEventService handlingEventService) throws JMSException {
+    public MessageConsumer handlingEventRegistrationAttemptConsumer(Session session,
+                                                                    @Qualifier("handlingEventRegistrationAttemptQueue") Destination destination,
+                                                                    HandlingEventService handlingEventService) throws JMSException {
         MessageConsumer consumer = session.createConsumer(destination);
         consumer.setMessageListener(new HandlingEventRegistrationAttemptConsumer(handlingEventService));
         return consumer;
@@ -98,7 +103,7 @@ public class InfrastructureMessagingJmsConfig {
 
     @Bean
     public ConnectionFactory jmsConnectionFactory() {
-        ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(brokerUrl);
+        ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(infrastructureProperties.getBrokerUrl());
         factory.setTrustedPackages(List.of("se.citerus.dddsample.interfaces.handling", "se.citerus.dddsample.domain", "java.util"));
         return factory;
     }
@@ -121,9 +126,12 @@ public class InfrastructureMessagingJmsConfig {
     }
 
     @Bean
-    public ApplicationEvents applicationEvents(JmsOperations jmsOperations, @Qualifier("cargoHandledQueue") Destination cargoHandledQueue,
-                                               @Qualifier("misdirectedCargoQueue") Destination misdirectedCargoQueue, @Qualifier("deliveredCargoQueue") Destination deliveredCargoQueue,
-                                               @Qualifier("rejectedRegistrationAttemptsQueue") Destination rejectedRegistrationAttemptsQueue, @Qualifier("handlingEventRegistrationAttemptQueue") Destination handlingEventRegistrationAttemptQueue) {
+    public ApplicationEvents applicationEvents(JmsOperations jmsOperations,
+                                               @Qualifier("cargoHandledQueue") Destination cargoHandledQueue,
+                                               @Qualifier("misdirectedCargoQueue") Destination misdirectedCargoQueue,
+                                               @Qualifier("deliveredCargoQueue") Destination deliveredCargoQueue,
+                                               @Qualifier("rejectedRegistrationAttemptsQueue") Destination rejectedRegistrationAttemptsQueue,
+                                               @Qualifier("handlingEventRegistrationAttemptQueue") Destination handlingEventRegistrationAttemptQueue) {
         return new JmsApplicationEventsImpl(jmsOperations, cargoHandledQueue, misdirectedCargoQueue, deliveredCargoQueue, rejectedRegistrationAttemptsQueue, handlingEventRegistrationAttemptQueue);
     }
 

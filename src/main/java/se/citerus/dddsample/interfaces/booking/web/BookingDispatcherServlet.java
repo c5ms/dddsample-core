@@ -3,6 +3,7 @@ package se.citerus.dddsample.interfaces.booking.web;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+// todo do we need this class still?
 public class BookingDispatcherServlet extends DispatcherServlet {
 
   @Override

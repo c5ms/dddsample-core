@@ -28,13 +28,13 @@ import static org.mockito.Mockito.*;
 public class UploadDirectoryScannerTest {
 
     private static final Instant exampleDate = LocalDateTime.parse("2022-10-29T13:37").atZone(ZoneOffset.UTC).toInstant();
-    private File uploadDir;
-    private File parseFailureDir;
+    private Path uploadDir;
+    private Path parseFailureDir;
 
     @BeforeEach
     void setUp() throws IOException {
-        uploadDir = new File(Files.createTempDirectory("upload").toUri());
-        parseFailureDir = new File(Files.createTempDirectory("parseFailure").toUri());
+        uploadDir = Files.createTempDirectory("upload");
+        parseFailureDir = Files.createTempDirectory("parseFailure");
     }
 
     @Test
@@ -44,9 +44,9 @@ public class UploadDirectoryScannerTest {
         UploadDirectoryScanner scanner = new UploadDirectoryScanner(uploadDir, parseFailureDir, appEventsMock);
         URL resource = this.getClass().getResource("/sampleHandlingReportFile.csv");
         assertThat(resource).isNotNull();
-        PathUtils.copyFile(resource, uploadDir.toPath().resolve("sampleHandlingReportFile.csv"));
+        PathUtils.copyFile(resource, uploadDir.resolve("sampleHandlingReportFile.csv"));
 
-        scanner.run();
+        scanner.scan();
 
         verify(appEventsMock).receivedHandlingEventRegistrationAttempt(captor.capture());
         HandlingEventRegistrationAttempt actual = captor.getValue();
@@ -57,7 +57,7 @@ public class UploadDirectoryScannerTest {
                 "type",
                 "unLocode.unlocode"
         ).contains(exampleDate, "ABC123", "0101", HandlingEvent.Type.CUSTOMS, "SESTO");
-        Stream<Path> files = Files.list(uploadDir.toPath());
+        Stream<Path> files = Files.list(uploadDir);
         assertThat(files.count()).isEqualTo(0);
         files.close();
     }
@@ -68,14 +68,14 @@ public class UploadDirectoryScannerTest {
         UploadDirectoryScanner scanner = new UploadDirectoryScanner(uploadDir, parseFailureDir, appEventsMock);
         URL resource = this.getClass().getResource("/sampleInvalidHandlingReportFile.csv");
         assertThat(resource).isNotNull();
-        PathUtils.copyFile(resource, uploadDir.toPath().resolve("sampleInvalidHandlingReportFile.csv"));
+        PathUtils.copyFile(resource, uploadDir.resolve("sampleInvalidHandlingReportFile.csv"));
 
-        scanner.run();
+        scanner.scan();
 
         verifyNoInteractions(appEventsMock);
-        Stream<Path> files = Files.list(parseFailureDir.toPath());
+        Stream<Path> files = Files.list(parseFailureDir);
         assertThat(files.count()).isEqualTo(1);
-        Path path = Files.list(parseFailureDir.toPath()).collect(Collectors.toList()).get(0);
+        Path path = Files.list(parseFailureDir).collect(Collectors.toList()).get(0);
         String line = FileUtils.readFileToString(new File(path.toUri()), Charsets.UTF_8);
         assertThat(line.trim()).isEqualTo("2022-10-29 13:37    ABC123  0101    XXX   CUSTOMS");
     }

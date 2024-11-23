@@ -25,7 +25,6 @@ public class BookingServiceImpl implements BookingService {
     private final RoutingService routingService;
     private final CargoFactory cargoFactory;
 
-
     @Override
     @Transactional
     public TrackingId bookNewCargo(final UnLocode originUnLocode,

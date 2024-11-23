@@ -7,15 +7,13 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.lang.Nullable;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.FixedLocaleResolver;
 import se.citerus.dddsample.application.ApplicationEvents;
 import se.citerus.dddsample.interfaces.handling.file.UploadDirectoryScanner;
 
-import java.io.File;
-import java.time.Duration;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 
 @Slf4j
@@ -27,6 +25,7 @@ public class InterfacesContext implements WebMvcConfigurer {
     public final InterfacesProperties properties;
 
     @Bean
+    // todo  is this in using?
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("messages");
@@ -34,6 +33,7 @@ public class InterfacesContext implements WebMvcConfigurer {
     }
 
     @Bean
+    // todo  is this in using?
     public FixedLocaleResolver localeResolver() {
         FixedLocaleResolver fixedLocaleResolver = new FixedLocaleResolver();
         fixedLocaleResolver.setDefaultLocale(Locale.ENGLISH);
@@ -42,22 +42,9 @@ public class InterfacesContext implements WebMvcConfigurer {
 
     @Bean
     public UploadDirectoryScanner uploadDirectoryScanner(ApplicationEvents applicationEvents) {
-        File uploadDirectoryFile = new File(properties.getUploadDirectory());
-        File parseFailureDirectoryFile = new File(properties.getParseFailureDirectory());
-        return new UploadDirectoryScanner(uploadDirectoryFile, parseFailureDirectoryFile, applicationEvents);
+        Path uploadDirectory = Paths.get(properties.getUploadDirectory());
+        Path parseFailureDirectory = Paths.get(properties.getParseFailureDirectory());
+        return new UploadDirectoryScanner(uploadDirectory, parseFailureDirectory, applicationEvents);
     }
 
-    @Bean
-    public ThreadPoolTaskScheduler myScheduler(@Nullable UploadDirectoryScanner scanner) {
-        if (scanner == null) {
-            log.info("No UploadDirectoryScannerBean found, skipping creation of scheduler.");
-            return null;
-        }
-        ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
-        threadPoolTaskScheduler.setPoolSize(10);
-        threadPoolTaskScheduler.setThreadNamePrefix("ThreadPoolTaskScheduler");
-        threadPoolTaskScheduler.initialize();
-        threadPoolTaskScheduler.scheduleAtFixedRate(scanner, Duration.ofSeconds(5));
-        return threadPoolTaskScheduler;
-    }
 }

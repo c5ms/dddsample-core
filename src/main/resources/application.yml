@@ -1,34 +1,34 @@
 server:
-    servlet:
-        context-path: /dddsample
+  servlet:
+    context-path: /dddsample
 
 logging:
-    level:
-        jdbc: debug
-        'se.citerus.dddsample': debug
-
-
-brokerUrl: "vm://localhost?broker.persistent=false&broker.useJmx=false"
+  level:
+    jdbc: debug
+    'se.citerus.dddsample': debug
 
 ddd:
-    sample:
-        interfaces:
-            uploadDirectory: /tmp/upload
-            parseFailureDirectory: /tmp/failed
+  sample:
+    infrastructure:
+      messaging:
+        broker-url: "vm://localhost?broker.persistent=false&broker.useJmx=false"
+    interfaces:
+      uploadDirectory: /tmp/upload
+      parseFailureDirectory: /tmp/failed
 
 spring:
-    dataSource:
-        url: jdbc:hsqldb:mem:dddsample
-        username: sa
-        password: ""
-    jpa:
-        open-in-view: true
+  dataSource:
+    url: jdbc:hsqldb:mem:dddsample
+    username: sa
+    password: ""
+  jpa:
+    open-in-view: true
 
 jdbc:
-    datasource-proxy:
-        enabled: true
-        multiline: false
-        include-parameter-values: true
-        query:
-            logger-name: jdbc
-            enable-logging: true
+  datasource-proxy:
+    enabled: true
+    multiline: false
+    include-parameter-values: true
+    query:
+      logger-name: jdbc
+      enable-logging: true

@@ -1,0 +1,35 @@
+@startuml
+
+entity   Cargo
+entity Itinerary
+entity Leg
+entity Delivery
+entity Location
+entity HandlingActivity
+entity RouteSpecification
+
+entity HandlingEvent
+
+entity Voyage
+
+Cargo --* Delivery
+Cargo --* Itinerary
+Cargo --* Location
+Cargo --* RouteSpecification
+
+
+Itinerary --* Leg
+
+Leg --* Voyage
+Leg --* Location
+
+Delivery --* HandlingEvent
+Delivery --* HandlingActivity
+Delivery --* Location
+Delivery --* Voyage
+
+
+HandlingEvent --* Voyage
+
+
+@enduml

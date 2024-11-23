@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import se.citerus.dddsample.domain.model.cargo.*;
 import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.model.location.LocationRepository;
+import se.citerus.dddsample.domain.shared.ImmutableValues;
 import se.citerus.dddsample.infrastructure.sampledata.SampleVoyages;
 import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
 import se.citerus.dddsample.domain.model.voyage.VoyageRepository;
@@ -55,7 +56,7 @@ public class ExternalRoutingServiceTest {
     assertThat(candidates).isNotNull();
 
     for (Itinerary itinerary : candidates) {
-      List<Leg> legs = itinerary.legs();
+      ImmutableValues<Leg> legs = itinerary.legs();
       assertThat(legs).isNotNull();
       assertThat(legs.isEmpty()).isFalse();
 

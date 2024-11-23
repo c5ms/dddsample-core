@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.fail;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CargoTrackingRestServiceIntegrationTest {
+public class CargoTrackingResourceIntegrationTest {
 
     @LocalServerPort
     private int port;

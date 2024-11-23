@@ -19,7 +19,6 @@ import se.citerus.dddsample.interfaces.booking.facade.internal.assembler.CargoRo
 import se.citerus.dddsample.interfaces.booking.facade.internal.assembler.ItineraryCandidateDTOAssembler;
 import se.citerus.dddsample.interfaces.booking.facade.internal.assembler.LocationDTOAssembler;
 
-import java.rmi.RemoteException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,14 +71,14 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
   }
 
   @Override
-  public void changeDestination(String trackingId, String destinationUnLocode) throws RemoteException {
+  public void changeDestination(String trackingId, String destinationUnLocode) {
     bookingService.changeDestination(new TrackingId(trackingId), new UnLocode(destinationUnLocode));
   }
 
   @Override
   public List<CargoRoutingDTO> listAllCargos() {
     final List<Cargo> cargoList = cargoRepository.getAll();
-    final List<CargoRoutingDTO> dtoList = new ArrayList<CargoRoutingDTO>(cargoList.size());
+    final List<CargoRoutingDTO> dtoList = new ArrayList<>(cargoList.size());
     final CargoRoutingDTOAssembler assembler = new CargoRoutingDTOAssembler();
     for (Cargo cargo : cargoList) {
       dtoList.add(assembler.toDTO(cargo));
@@ -88,10 +87,10 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
   }
 
   @Override
-  public List<RouteCandidateDTO> requestPossibleRoutesForCargo(String trackingId) throws RemoteException {
+  public List<RouteCandidateDTO> requestPossibleRoutesForCargo(String trackingId) {
     final List<Itinerary> itineraries = bookingService.requestPossibleRoutesForCargo(new TrackingId(trackingId));
 
-    final List<RouteCandidateDTO> routeCandidates = new ArrayList<RouteCandidateDTO>(itineraries.size());
+    final List<RouteCandidateDTO> routeCandidates = new ArrayList<>(itineraries.size());
     final ItineraryCandidateDTOAssembler dtoAssembler = new ItineraryCandidateDTOAssembler();
     for (Itinerary itinerary : itineraries) {
       routeCandidates.add(dtoAssembler.toDTO(itinerary));
