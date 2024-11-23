@@ -2,7 +2,7 @@ package se.citerus.dddsample.interfaces.booking.web;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -38,14 +38,10 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public final class CargoAdminController {
 
-    @Autowired
-    private  BookingServiceFacade bookingServiceFacade;
-
-    public CargoAdminController(BookingServiceFacade bookingServiceFacade) {
-        this.bookingServiceFacade = bookingServiceFacade;
-    }
+    private final BookingServiceFacade bookingServiceFacade;
 
     @InitBinder
     private void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
@@ -73,7 +69,7 @@ public final class CargoAdminController {
 
         LocalDate arrivalDeadline = LocalDate.parse(command.getArrivalDeadline(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         String trackingId = bookingServiceFacade.bookNewCargo(
-                command.getOriginUnlocode(), command.getDestinationUnlocode(), arrivalDeadline.atStartOfDay().toInstant(ZoneOffset.UTC)
+            command.getOriginUnlocode(), command.getDestinationUnlocode(), arrivalDeadline.atStartOfDay().toInstant(ZoneOffset.UTC)
         );
         response.sendRedirect("show?trackingId=" + trackingId);
     }
@@ -112,11 +108,11 @@ public final class CargoAdminController {
         List<LegDTO> legDTOs = new ArrayList<LegDTO>(command.getLegs().size());
         for (RouteAssignmentCommand.LegCommand leg : command.getLegs()) {
             legDTOs.add(new LegDTO(
-                            leg.getVoyageNumber(),
-                            leg.getFromUnLocode(),
-                            leg.getToUnLocode(),
-                            leg.getFromDate(),
-                            leg.getToDate())
+                leg.getVoyageNumber(),
+                leg.getFromUnLocode(),
+                leg.getToUnLocode(),
+                leg.getFromDate(),
+                leg.getToDate())
             );
         }
 
