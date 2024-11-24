@@ -57,12 +57,10 @@ public class ExternalRoutingService implements RoutingService {
     /*
      The returned result is then translated back into our domain model.
     */
-    final List<Itinerary> itineraries = transitPaths.stream()
-            .map(this::toItinerary)
-            .filter(itinerary -> isSatisfyingRouteSpec(itinerary, routeSpecification))
-            .collect(Collectors.toList());
-
-    return itineraries;
+      return transitPaths.stream()
+              .map(this::toItinerary)
+              .filter(itinerary -> isSatisfyingRouteSpec(itinerary, routeSpecification))
+              .collect(Collectors.toList());
   }
 
   private static boolean isSatisfyingRouteSpec(Itinerary itinerary, RouteSpecification routeSpecification) {
