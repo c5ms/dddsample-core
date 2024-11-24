@@ -2,106 +2,129 @@
 
 top to bottom direction
 'skinparam linetype ortho
+left to right direction
+'!pragma layout smetana
 
-class Cargo {
-  + origin: Location
-  + trackingId: String
-  + routeSpecification: RouteSpecification
-  + delivery: Delivery
-  + id: long
-  + itineraryLegs: List<Leg>
-}
-class CarrierMovement {
-  + id: long
-  + departureLocation: Location
-  + arrivalLocation: Location
-  + arrivalTime: Instant
-  + departureTime: Instant
-}
-class Delivery {
-  + misdirected: boolean
-  + calculatedAt: Instant
-  + lastKnownLocation: Location
-  + eta: Instant
-  + nextExpectedActivity: HandlingActivity
-  + transportStatus: TransportStatus
-  + routingStatus: RoutingStatus
-  + isUnloadedAtDestination: boolean
-  + lastEvent: HandlingEvent
-  + currentVoyage: Voyage
-}
-class HandlingActivity {
-  + location: Location
-  + voyage: Voyage
-  + type: Type
-}
-class HandlingEvent {
-  + type: Type
-  + id: long
-  + voyage: Voyage
-  + location: Location
-  + cargo: Cargo
-  + completionTime: Instant
-  + registrationTime: Instant
-}
-class HandlingHistory {
-  - handlingEvents: List<HandlingEvent>
-}
-class Itinerary {
-  - id: Long
-  - legs: List<Leg>
-}
-class Leg {
-  + voyage: Voyage
-  + unloadTime: Instant
-  + id: long
-  + unloadLocation: Location
-  + loadLocation: Location
-  + loadTime: Instant
-}
-class RouteSpecification {
-  + origin: Location
-  + destination: Location
-  + arrivalDeadline: Instant
-}
-class Schedule {
-  - carrierMovements: List<CarrierMovement>
+package cargo{
+
+    entity Cargo <<AggregateRoot>> #aliceblue {
+      + id: long
+      + origin: Location
+      + trackingId: String
+      + routeSpecification: RouteSpecification
+      + delivery: Delivery
+      + itineraryLegs: List<Leg>
+    }
+
+    class RouteSpecification  <<ValueObject>>  {
+      + origin: Location
+      + destination: Location
+      + arrivalDeadline: Instant
+    }
+
+
+    class Itinerary <<ValueObject>>  {
+      - id: Long
+      - legs: List<Leg>
+    }
+
+   class Leg   <<ValueObject>> {
+      + id: long
+      + voyage: Voyage
+      + unloadTime: Instant
+      + unloadLocation: Location
+      + loadLocation: Location
+      + loadTime: Instant
+    }
+
+    class Delivery    <<ValueObject>> {
+      + misdirected: boolean
+      + calculatedAt: Instant
+      + lastKnownLocation: Location
+      + eta: Instant
+      + nextExpectedActivity: HandlingActivity
+      + transportStatus: TransportStatus
+      + routingStatus: RoutingStatus
+      + isUnloadedAtDestination: boolean
+      + lastEvent: HandlingEvent
+      + currentVoyage: Voyage
+    }
+
+
+
+  class HandlingActivity    <<ValueObject>> {
+      + location: Location
+      + voyage: Voyage
+      + type: Type
+    }
+
 }
 
-class Location {
-  + id: long
-  + name: String
-  + unlocode: String
+package handling{
+
+    entity HandlingEvent <<AggregateRoot>> #aliceblue {
+      + id: long
+      + type: Type
+      + voyage: Voyage
+      + location: Location
+      + cargo: Cargo
+      + completionTime: Instant
+      + registrationTime: Instant
+    }
+
 }
 
-class Voyage {
-  + id: long
-  + carrierMovements: List<CarrierMovement>
-  + voyageNumber: String
+
+package voyage{
+    entity Voyage  <<AggregateRoot>> #aliceblue {
+      + id: long
+      + carrierMovements: List<CarrierMovement>
+      + voyageNumber: String
+    }
+
+    class CarrierMovement   <<ValueObject>>  {
+      + id: long
+      + departureLocation: Location
+      + arrivalLocation: Location
+      + arrivalTime: Instant
+      + departureTime: Instant
+    }
+
+    class Schedule   <<ValueObject>>  {
+      - carrierMovements: List<CarrierMovement>
+    }
+
 }
 
-Cargo              "1" *--> "delivery\n1" Delivery           
-Cargo               -->  Itinerary          : "«create»"
-Cargo              "1" *--> "itineraryLegs\n*" Leg                
-Cargo              "1" *--> "origin\n1" Location           
-Cargo              "1" *--> "routeSpecification\n1" RouteSpecification 
-CarrierMovement    "1" *--> "arrivalLocation\n1" Location           
-Delivery            -->  HandlingActivity   : "«create»"
-Delivery           "1" *--> "nextExpectedActivity\n1" HandlingActivity   
-Delivery           "1" *--> "lastEvent\n1" HandlingEvent      
-Delivery           "1" *--> "lastKnownLocation\n1" Location           
-Delivery           "1" *--> "currentVoyage\n1" Voyage             
-HandlingActivity   "1" *--> "location\n1" Location           
-HandlingActivity   "1" *--> "voyage\n1" Voyage             
-HandlingEvent      "1" *--> "cargo\n1" Cargo              
-HandlingEvent      "1" *--> "location\n1" Location           
-HandlingEvent      "1" *--> "voyage\n1" Voyage             
-HandlingHistory    "1" *--> "handlingEvents\n*" HandlingEvent      
-Itinerary          "1" *--> "legs\n*" Leg                
-Leg                "1" *--> "loadLocation\n1" Location           
-Leg                "1" *--> "voyage\n1" Voyage             
-RouteSpecification "1" *--> "origin\n1" Location           
-Schedule           "1" *--> "carrierMovements\n*" CarrierMovement    
-Voyage             "1" *--> "carrierMovements\n*" CarrierMovement    
-Voyage              -->  Schedule           : "«create»"
+package location{
+    entity Location  <<AggregateRoot>> #aliceblue {
+      + id: long
+      + name: String
+      + unlocode: String
+    }
+}
+
+
+
+Cargo              "1" *--> "routeSpecification\n1" RouteSpecification
+Cargo              "1" *--> "delivery\n1" Delivery
+Cargo              "1" *--> "itineraryLegs\n*" Leg
+Cargo              "1" *-->  Location
+Delivery           "1" *--> "nextExpectedActivity\n1" HandlingActivity
+Delivery           "1" *-->  Location
+Delivery           "1" *--> "currentVoyage\n1" Voyage
+Delivery           "1" *--> "lastEvent\n1" HandlingEvent
+HandlingActivity   "1" *-->  Location
+HandlingActivity   "1" *--> "voyage\n1" Voyage
+Itinerary          "1" *--> "legs\n*" Leg
+HandlingEvent      "1" *-->  Location
+Leg                "1" *-->  Location
+RouteSpecification "1" *-->  Location
+Schedule           "1" *--> "carrierMovements\n*" CarrierMovement
+Voyage             "1" *--> "carrierMovements\n*" CarrierMovement
+CarrierMovement    "1" *-->  Location
+
+'Cargo               -[#blue]>  Itinerary          : "«create»"
+'Delivery            --[#blue]>  HandlingActivity   : "«create»"
+'Voyage              --[#blue]>  Schedule           : "«create»"
 @enduml
